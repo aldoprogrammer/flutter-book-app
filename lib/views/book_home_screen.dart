@@ -1,4 +1,5 @@
 import 'package:book_app/models/book.dart';
+import 'package:book_app/views/book_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class BooksHome extends StatelessWidget {
@@ -46,7 +47,12 @@ class BooksHome extends StatelessWidget {
                             return book.seller
                                 ? GestureDetector(
                                     onTap: () {
-                                      // Handle tap event here
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                BookDetails(book: book)),
+                                      );
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 15),
@@ -78,77 +84,83 @@ class BooksHome extends StatelessWidget {
                     )
                   ]),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "New Book List",
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    height: 325,
-                    child: ListView.builder(
-                      itemCount: booklist.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        final book = booklist[index];
-                        final String bookName = book.title.length > 15
-                            ? "${book.title.substring(0, 13)}..."
-                            : book.title;
-                        return GestureDetector(
-                          onTap: () {},
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    book.cover,
-                                    height: 220,
-                                    width: 150,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(bookName,
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600)),
-                                Text(
-                                  book.author,
-                                  style: const TextStyle(
-                                      fontSize: 15, color: Colors.black45),
-                                ),
-                                Text(
-                                  "\$${book.price}",
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            )
+            bookList()
           ],
         ));
+  }
+
+  Container bookList() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "New Book List",
+            style: TextStyle(
+                fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            height: 325,
+            child: ListView.builder(
+              itemCount: booklist.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                final book = booklist[index];
+                final String bookName = book.title.length > 15
+                    ? "${book.title.substring(0, 13)}..."
+                    : book.title;
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => BookDetails(book: book)),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            book.cover,
+                            height: 220,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(bookName,
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w600)),
+                        Text(
+                          book.author,
+                          style: const TextStyle(
+                              fontSize: 15, color: Colors.black45),
+                        ),
+                        Text(
+                          "\$${book.price}",
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   SizedBox BestSeller() {
