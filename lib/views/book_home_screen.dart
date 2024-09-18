@@ -83,14 +83,14 @@ class BooksHome extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "New Book List",
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w600,
                         color: Colors.black),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SizedBox(
@@ -100,11 +100,15 @@ class BooksHome extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final book = booklist[index];
+                        final String bookName = book.title.length > 15
+                            ? "${book.title.substring(0, 13)}..."
+                            : book.title;
                         return GestureDetector(
                           onTap: () {},
                           child: Padding(
-                            padding: EdgeInsets.only(right: 15),
+                            padding: const EdgeInsets.only(right: 15),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
@@ -115,8 +119,23 @@ class BooksHome extends StatelessWidget {
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
+                                ),
+                                Text(bookName,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600)),
+                                Text(
+                                  book.author,
+                                  style: const TextStyle(
+                                      fontSize: 15, color: Colors.black45),
+                                ),
+                                Text(
+                                  "\$${book.price}",
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 )
                               ],
                             ),
