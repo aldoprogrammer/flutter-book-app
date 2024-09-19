@@ -166,33 +166,34 @@ class _BookDetailsState extends State<BookDetails> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 30),
                 child: Container(
                   height: 110,
-                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  padding:
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(width: 2),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                        child: Row(
-                          children: [
-                            Image.network(
-                              "",
-                              height: 50,
-                              width: 50,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(
-                              width: 15,
-                            )
-                          ],
-                        ),
+                      moviMoreInfo(
+                        "https://cdn.vectorstock.com/i/preview-1x/49/04/psychology-icon-vector-38224904.webp",
+                        widget.book.genre,
+                        "Genre",
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      moviMoreInfo(
+                        "https://cdn2.iconfinder.com/data/icons/new-year-resolutions/64/resolutions-06-128.png",
+                        widget.book.lanugage,
+                        "Lang",
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      moviMoreInfo(
+                        "https://cdn1.iconfinder.com/data/icons/survey-7/64/age_birthday_dating_range_board-128.png",
+                        widget.book.age,
+                        "Age",
                       ),
                     ],
                   ),
@@ -200,6 +201,48 @@ class _BookDetailsState extends State<BookDetails> {
           ],
         )
       ],
+    );
+  }
+
+  Container moviMoreInfo(image, title, value) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 2, color: Colors.black12),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      child: Row(
+        children: [
+          Image.network(
+            image,
+            height: 50,
+            width: 50,
+            fit: BoxFit.cover,
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          Column(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  letterSpacing: 1.5,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                value,
+                style: const TextStyle(
+                  letterSpacing: 1.5,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 
