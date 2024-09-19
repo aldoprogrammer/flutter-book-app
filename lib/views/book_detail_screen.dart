@@ -13,14 +13,75 @@ class BookDetails extends StatefulWidget {
 
 class _BookDetailsState extends State<BookDetails> {
   bool isFavorite = false;
-  bool isChart = false; // Manage this state
+  bool isCart = false; // To manage cart button text and background color
 
+  String cartText = "Add to Cart";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: headerParts(context),
-      body: isChart ? buildChartView() : buildListView(),
+      body: buildListView(), // No more chart view, just the book details
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.white,
+        onPressed: () {},
+        label: Row(
+          children: [
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "\$${widget.book.price}",
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  TextSpan(
+                    text: "\$${widget.book.price + 4.5}",
+                    style: const TextStyle(
+                        color: Colors.black38,
+                        fontSize: 15,
+                        decoration: TextDecoration.lineThrough),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    backgroundColor: isCart ? Colors.red : Colors.black54),
+                onPressed: () {
+                  setState(() {
+                    isCart = !isCart; // Toggle cart state
+                    cartText = isCart ? "Remove from Cart" : "Add to Cart";
+                  });
+                },
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      cartText,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ))
+          ],
+        ),
+      ),
     );
   }
 
@@ -60,18 +121,6 @@ class _BookDetailsState extends State<BookDetails> {
               ),
             ),
             const SizedBox(width: 25),
-            // GestureDetector(
-            //   onTap: () {
-            //     setState(() {
-            //       isChart = !isChart;
-            //     });
-            //   },
-            //   child: Icon(
-            //     isChart ? Icons.view_list : Icons.show_chart,
-            //     color: Colors.black,
-            //     size: 25,
-            //   ),
-            // ),
             const SizedBox(width: 25)
           ],
         ));
@@ -88,11 +137,14 @@ class _BookDetailsState extends State<BookDetails> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.network(
-                    widget.book.cover,
-                    fit: BoxFit.fill,
-                    height: 260,
-                    width: MediaQuery.of(context).size.width / 2.5,
+                  Hero(
+                    tag: widget.book.cover,
+                    child: Image.network(
+                      widget.book.cover,
+                      fit: BoxFit.fill,
+                      height: 260,
+                      width: MediaQuery.of(context).size.width / 2.5,
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Column(
@@ -124,11 +176,14 @@ class _BookDetailsState extends State<BookDetails> {
                           const SizedBox(
                             height: 15,
                           ),
-                          Text(
-                            widget.book.author,
-                            maxLines: 1,
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 12),
+                            child: Text(
+                              widget.book.author,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
                           )
                         ],
                       ),
@@ -138,8 +193,7 @@ class _BookDetailsState extends State<BookDetails> {
                       Row(
                         children: [
                           RatingBarIndicator(
-                            rating: widget.book.rating
-                                .toDouble(), // Ensure the rating is a double
+                            rating: widget.book.rating.toDouble(),
                             itemBuilder: (context, index) => const Icon(
                               Icons.star,
                               color: Colors.amber,
@@ -198,36 +252,69 @@ class _BookDetailsState extends State<BookDetails> {
                     ],
                   ),
                 )),
-            SizedBox(
-              height: 400,
-              width: double.infinity,
-              child: DefaultTabController(
-                length: 2,
-                child: Scaffold(
-                  backgroundColor: Colors.transparent,
-                  appBar: PreferredSize(
-                    preferredSize: const Size.fromHeight(50),
-                    child: SafeArea(
-                        child: Column(
-                      children: [
-                        Expanded(child: Container()),
-                        TapBar(
-                            labelPadding: EdgeInsets.only(bottom: 13),
-                            indicatorColor: Colors.black,
-                            unselectedLabelColor: Colors.black38,
-                            tabs: [
-                              Text('Info'),
-                              Text('Reviews'),
-                            ])
-                      ],
-                    )),
-                  ),
-                ),
-              ),
-            )
+            infoAndReview()
           ],
         )
       ],
+    );
+  }
+
+  SizedBox infoAndReview() {
+    return SizedBox(
+      height: 400,
+      width: double.infinity,
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(50),
+              child: SafeArea(
+                  child: Column(
+                children: [
+                  Expanded(child: Container()),
+                  const TabBar(
+                      labelPadding: EdgeInsets.only(bottom: 13),
+                      indicatorColor: Colors.black,
+                      unselectedLabelColor: Colors.black38,
+                      tabs: [
+                        Text('Info'),
+                        Text('Reviews'),
+                      ])
+                ],
+              )),
+            ),
+            body: TabBarView(children: [
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: ListView(
+                  children: [
+                    const Text(
+                      "Summary",
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.3,
+                          height: 2),
+                    ),
+                    Text(
+                      widget.book.summary,
+                      style: const TextStyle(fontSize: 17),
+                      softWrap: true,
+                    ),
+                  ],
+                ),
+              ),
+              const Center(
+                  child: Text(
+                "No reviews yet!",
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 25,
+                    color: Colors.black),
+              ))
+            ])),
+      ),
     );
   }
 
@@ -270,13 +357,6 @@ class _BookDetailsState extends State<BookDetails> {
           )
         ],
       ),
-    );
-  }
-
-  Widget buildChartView() {
-    // Replace this with your chart view implementation
-    return const Center(
-      child: Text('Chart View Not Implemented'),
     );
   }
 }

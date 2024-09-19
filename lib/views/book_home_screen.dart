@@ -56,13 +56,17 @@ class BooksHome extends StatelessWidget {
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 15),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.network(
-                                          book.showImage,
-                                          height: 250,
-                                          width: 350,
-                                          fit: BoxFit.cover,
+                                      child: Hero(
+                                        tag: book.cover,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image.network(
+                                            book.showImage,
+                                            height: 250,
+                                            width: 350,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     ),
