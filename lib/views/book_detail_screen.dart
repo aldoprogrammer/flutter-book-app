@@ -197,7 +197,34 @@ class _BookDetailsState extends State<BookDetails> {
                       ),
                     ],
                   ),
-                ))
+                )),
+            SizedBox(
+              height: 400,
+              width: double.infinity,
+              child: DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  appBar: PreferredSize(
+                    preferredSize: const Size.fromHeight(50),
+                    child: SafeArea(
+                        child: Column(
+                      children: [
+                        Expanded(child: Container()),
+                        TapBar(
+                            labelPadding: EdgeInsets.only(bottom: 13),
+                            indicatorColor: Colors.black,
+                            unselectedLabelColor: Colors.black38,
+                            tabs: [
+                              Text('Info'),
+                              Text('Reviews'),
+                            ])
+                      ],
+                    )),
+                  ),
+                ),
+              ),
+            )
           ],
         )
       ],
